@@ -7,10 +7,10 @@ Original file is located at
     https://colab.research.google.com/drive/1FE4Ec_ddwPwGLF-JL07phBGXCwDqmQNG
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
-
 import numpy as np
+from IPython.display import Audio, display
+from scipy.io import wavfile
+import matplotlib.pyplot as plt
 
 def get_piano_notes():   
     # White keys are in Uppercase and black keys (sharps) are in lowercase
@@ -28,50 +28,22 @@ def get_piano_notes():
 
 get_piano_notes()
 
-from IPython.display import Audio, display
+filename = "hpd.wav"
 
-sound_hey = "hpd.wav"
-
-display(Audio(sound_hey, autoplay=True))  # plays ok
-
-from scipy.io import wavfile
-import matplotlib.pyplot as plt
-plt.style.use('seaborn-dark')
+display(Audio(filename, autoplay=True))  # plays ok
 
 # Load data from wav file
-sample_rate, middle_c = wavfile.read('/content/drive/MyDrive/Interdisciplinary (1)/1/hpd.wav')
-
+sample_rate, middle_c = wavfile.read(filename)
 print("Sample rate:", sample_rate)
-a = middle_c.T[0]
-t = np.linspace(0, len(a)/sample_rate, num=len(a))
-len_a = len(a)
-print(len_a)
-a_test = a[::sample_rate]
-t_test = t[::sample_rate]
-b = middle_c.T[1]
-# # Plot sound wave
-plt.plot(t, a)
-plt.plot(t_test, a_test)
-# plt.plot(b)
-plt.xlabel('Time (s)')
-plt.ylabel('Amplitude')
-plt.grid()
 
-# wavfile.write("new_hpd.wav", sample_rate, a)
+C_start = 3.5
+C_end = 4.5
 
-# display(Audio("new_hpd.wav", autoplay=True))  # plays ok
+start = int(C_start * sample_rate)
+end = int(C_end * sample_rate)
 
-fig, ax = plt.subplots()
-t_start = 3.5
-t_end = 4.5
-
-start = np.int(t_start * sample_rate)
-end = np.int(t_end * sample_rate)
-ax.plot(t[start:end:500], a[start:end:500]) # looks it's C note
-
-import numpy as np
-from scipy.io import wavfile
-import matplotlib.pyplot as plt
+amplitude = middle_c.T[1]
+time = np.linspace(0, len(amplitude)/sample_rate, num=len(amplitude))
 
 def plot_frequency_fft(amplitude, title):
   #FFT
@@ -88,9 +60,8 @@ def plot_frequency_fft(amplitude, title):
   plt.xlim([0, 2000])
   plt.show()
 
-
-plot_frequency_fft(a, "Spectrum of song")
-plot_frequency_fft(a[start:end], "Spectrum of C part of song (beginning)")
+plot_frequency_fft(amplitude, "Spectrum of song")
+plot_frequency_fft(amplitude[start:end], "Spectrum of C part of song (beginning)")
 
 def plot_signal(time, amplitude, title):
   plt.figure(figsize=(17,9)) 
@@ -99,10 +70,10 @@ def plot_signal(time, amplitude, title):
   plt.ylabel('Amplitude')
   plt.title(title)
   plt.plot(time, amplitude, color = "#558271")
-  a_test = a[::sample_rate]
-  t_test = t[::sample_rate]
-  plt.plot(t_test, a_test, color = "#b52f67")
+  amplitude_test = amplitude[::sample_rate]
+  time_test = time[::sample_rate]
+  plt.plot(time_test, amplitude_test, color = "#b52f67")
   plt.show()
 
 # Plot sound wave
-plot_signal(t, a, "Song signal")
+plot_signal(time, amplitude, "Song signal")
