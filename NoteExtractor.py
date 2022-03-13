@@ -67,7 +67,6 @@ class NoteExtractor :
         n0 = self.onset_boundaries[i]
         n1 = self.onset_boundaries[i+1]
         f0, t = self.estimate_note(self.x[n0:n1])
-        print("Freq {} | t {}".format(f0, t))
         return self.generate_sine(f0, n1-n0)
 
     def get_synthetic(self):
@@ -121,5 +120,4 @@ class NoteExtractor :
     
     def set_onset_times(self, onset_times):
         self.onset_times = onset_times
-
 
