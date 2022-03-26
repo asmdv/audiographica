@@ -49,5 +49,5 @@ def print_sheet_music(frequencies):
     abjad.show(staff)
 
 #example for all notes
-print_sheet_music(frequencies)
+# print_sheet_music(frequencies)
 
