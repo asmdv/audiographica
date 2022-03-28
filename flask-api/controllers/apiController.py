@@ -4,7 +4,7 @@ import datetime as dt
 
 from services.NoteExtractor import NoteExtractor
 from services.converter import convert_to_pdf
-from services.print_sheet_music2 import print_sheet_music
+from services.print_sheet_music import print_sheet_music
 
 DIR_PATH = "./uploaded_files/"
 
@@ -22,6 +22,7 @@ def postAudio():
   request.files['file'].save(file_path)
   ne = NoteExtractor(file_path)
   out = ne.get_all_estimated_freqs()
+  print("Freq and length: ", out)
   freqs = [a[0] for a in out]
   print_sheet_music(file_path, freqs)
   pdf_path = convert_to_pdf(file_path)
