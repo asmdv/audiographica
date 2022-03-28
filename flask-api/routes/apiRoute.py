@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.apiController import index, getDateTime, reverseOrder, postAudio
+from controllers.apiController import *
 
 apiRoute = Blueprint('apiRoute', __name__)
 apiRoute.route('/', methods=['GET'])(index)

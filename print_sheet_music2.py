@@ -15,39 +15,45 @@ def get_note_from_freq(freq : float)->str:
       if(freq < avg):
         return notes[i-1]
       else:
-        return notes[i] 
+        return notes[i]
 
-#getting list of notes given list of frequencies
+      #getting list of notes given list of frequencies
 def get_list_of_notes(frequencies):
-    notes = []
-    for i in frequencies:
-        notes.append(get_note_from_freq(i))
-    return notes
+  notes = []
+  for i in frequencies:
+    notes.append(get_note_from_freq(i))
+  return notes
 
 def get_note_abjad_format(str):
-    note=""
-    octave={"0":",,,","1":",,","2":",","3":"","4":"'","5":"''","6":"'''","7":"''''","8":"'''''"}
-    note_octave=octave[str[-1]]
-    note+=str[0].lower()
-    if(len(str)>2):
-        note+="f"
-    note+=note_octave
-    return note
+  note=""
+  octave={"0":",,,","1":",,","2":",","3":"","4":"'","5":"''","6":"'''","7":"''''","8":"'''''"}
+  note_octave=octave[str[-1]]
+  note+=str[0].lower()
+  if(len(str)>2):
+    note+="f"
+  note+=note_octave
+  return note
 
 
 def change_note_format(arr):
-    notes = ""
-    for i in arr:
-        notes+=get_note_abjad_format(i)
-        notes+=" "
-    return notes    
+  notes = "{\n"
+  for i in arr:
+    notes+="<"
+    notes+=get_note_abjad_format(i)
+    notes+="> "
+  notes+="\n}"
+  return notes
 
 def print_sheet_music(frequencies):
-    arr = get_list_of_notes(frequencies)
-    notes = change_note_format(arr)
-    staff = abjad.Staff(notes)
-    abjad.show(staff)
+  arr = get_list_of_notes(frequencies)
+  notes = change_note_format(arr)
+  f = open("Notes.ly", "a")
+  f.write(notes)
+  f.close()
+  # staff = abjad.Staff(notes)
+  # abjad.show(staff)
 
 #example for all notes
 # print_sheet_music(frequencies)
+
 
