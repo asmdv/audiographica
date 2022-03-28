@@ -23,7 +23,6 @@ def postAudio():
   ne = NoteExtractor(file_path)
   out = ne.get_all_estimated_freqs()
   freqs = [a[0] for a in out]
-  print(file_path)
   print_sheet_music(file_path, freqs)
   pdf_path = convert_to_pdf(file_path)
   return send_file(pdf_path)
