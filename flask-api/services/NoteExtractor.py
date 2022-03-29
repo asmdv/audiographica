@@ -9,6 +9,10 @@ class NoteExtractor :
         self.synthetic = None
 
     def get_onset_values(self) -> list:
+        """
+        Returns:
+            List of indexes where the signal is onset.
+        """
         onset_samples = librosa.onset.onset_detect(self.x,
                                                 sr=self.sample_rate, units='samples', 
                                                 hop_length=self.hop_length, 
@@ -24,11 +28,16 @@ class NoteExtractor :
         return onset_samples, onset_boundaries, onset_times
 
     def estimate_note(self, segment: list, fmin: float=50.0, fmax: float=2000.0) -> float:
-        '''
-        returns 
-        f0: note frequency 
-        t:  note duration 
-        '''
+        """
+        Estimates most suitable note at a given segment in the range of fmin and fmax.
+        Args:
+            segment (list): signal segment.
+            fmin (float): minimal frequency.
+            fmax (float): maximum frequency.
+
+        Returns:
+            (float) Frequency.
+        """
         # Find autocorrelation of a given segment
         r = librosa.autocorrelate(segment)
         
@@ -45,12 +54,12 @@ class NoteExtractor :
         return f0, t
 
     def get_all_estimated_freqs(self):
-        '''
-        returns 
-        notes_list : list of occured notes in chronological order
-            notes_list[0] : note frequency
-            notes_list[1] : note duration
-        '''
+        """
+        Returns:
+            notes_list : list of occurred notes in chronological order
+                notes_list[0] : note frequency
+                notes_list[1] : note duration
+        """
         notes_list = []
         for i in range(len(self.onset_boundaries) - 1):
             n0 = self.onset_boundaries[i]
@@ -59,11 +68,28 @@ class NoteExtractor :
             notes_list.append([f0, t])
         return notes_list
 
-    def generate_sine(self, f0: float, n_duration: int) -> list:
+    def generate_sine(self, f0: float, n_duration: int) -> np.ndarray:
+        """
+        Generates sine signal.
+        Args:
+            f0 (float): frequency.
+            n_duration (int): duration of signal (discrete).
+
+        Returns:
+            Generated sine signal.
+        """
         n = np.arange(n_duration)
         return 0.2*np.sin(2*np.pi*f0*n/float(self.sample_rate))
 
-    def estimate_note_and_generate_sine(self, i: int) -> list:
+    def estimate_note_and_generate_sine(self, i: int) -> np.ndarray:
+        """
+        Generates sine signal of given song fragment.
+        Args:
+            i (int): Index of song fragment.
+
+        Returns:
+            Generated sine signal.
+        """
         n0 = self.onset_boundaries[i]
         n1 = self.onset_boundaries[i+1]
         f0, t = self.estimate_note(self.x[n0:n1])
