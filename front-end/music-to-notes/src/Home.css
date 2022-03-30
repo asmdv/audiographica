@@ -5,7 +5,7 @@ h1{
     line-height: 1.1;
     /* max-inline-size: 15ch; */
     margin: auto;
-    margin-left: 13%!important;
+    /* margin-left: 13%!important; */
     font-family:  'Karla', sans-serif;
 }
 
@@ -27,12 +27,12 @@ h3{
 h2{
     color: white;
     font-family:  'Karla', sans-serif;
-    margin-left: 16%!important;
+    /* margin-left: 16%!important; */
 }
 
 form{
     margin-top: 3%;
-    margin-left: 30%!important;
+    /* margin-left: 30%!important; */
 
 }
 #navbar {

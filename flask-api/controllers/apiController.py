@@ -1,5 +1,6 @@
 from flask import jsonify, request, Response, send_file
 import os
+import shutil
 import datetime as dt
 
 from services.NoteExtractor import NoteExtractor
@@ -16,8 +17,8 @@ def getDateTime():
   return jsonify(datetime=now)
 
 def postAudio():
-  # if (request.files['file'].content_type[:5] != "audio"):
-  #   return Response("Unsupported file type", status=400)
+  if (request.files['file'].content_type[:5] != "audio"):
+    return Response("Unsupported file type", status=400)
   file_path = os.path.join(DIR_PATH, request.files['file'].filename)
   request.files['file'].save(file_path)
   ne = NoteExtractor(file_path)
@@ -26,4 +27,10 @@ def postAudio():
   freqs = [a[0] for a in out]
   print_sheet_music(file_path, freqs)
   pdf_path = convert_to_pdf(file_path)
-  return send_file(pdf_path)
+  pdf_path = os.path.abspath(pdf_path)
+  index = pdf_path.find('music-to-notes')
+  project_path = pdf_path[0:index+len("music-to-notes")]
+  file_path = project_path+"\\front-end\\music-to-notes\\public\\notes.png"
+  shutil.copy(pdf_path,file_path)
+  print("Generated notes at:",file_path)
+  return jsonify(path=file_path)

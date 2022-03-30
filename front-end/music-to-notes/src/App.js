@@ -8,7 +8,7 @@ function App() {
     <div >
       <Home/>
       <FileUploader/>
-      <ViewPdf/>
+      {/* <ViewPdf/> */}
     </div>
    
   );
