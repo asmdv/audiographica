@@ -44,10 +44,18 @@ def change_note_format(arr):
     notes+=" }"    
     return notes    
 
+def extract_extension(name) :
+  return name.split(".")[-1]
+
+def extract_name(name):
+  return ".".join(name.split(".")[:-1])
+
 def print_sheet_music(file_path, frequencies):
   arr = get_list_of_notes(frequencies)
   notes = change_note_format(arr)
-  f = open(file_path, "w")
+  ly_path = extract_name(file_path) + ".ly"
+  f = open(ly_path, "w")
   f.write(notes)
   f.close()
+  return ly_path
 

@@ -4,7 +4,7 @@ import datetime as dt
 
 from services.NoteExtractor import NoteExtractor
 from services.converter import *
-from services.print_sheet_music import print_sheet_music
+from services.print_sheet_music import print_sheet_music, extract_name
 
 DIR_PATH = "./uploaded_files/"
 
@@ -16,8 +16,8 @@ def getDateTime():
   return jsonify(datetime=now)
 
 def postAudio():
-  # if (request.files['file'].content_type[:5] != "audio"):
-  #   return Response("Unsupported file type", status=400)
+  if (request.files['file'].content_type[:5] != "audio"):
+    return Response("Unsupported file type", status=400)
   file_path = os.path.join(DIR_PATH, request.files['file'].filename)
   request.files['file'].save(file_path)
   file_type = request.form['type']
@@ -27,6 +27,13 @@ def postAudio():
   out = ne.get_all_estimated_freqs()
   print("Freq and length: ", out)
   freqs = [a[0] for a in out]
-  print_sheet_music(file_path, freqs)
-  pdf_path = convert(file_path, file_type)
-  return send_file(pdf_path)
+  ly_path = print_sheet_music(file_path, freqs)
+  path = convert(ly_path, 'png')
+  return send_file(path)
+
+def get_pdf():
+  filename = request.json['filename']
+  file_path = os.path.join(DIR_PATH, filename)
+  ly_path = extract_name(file_path) + ".ly"
+  path = convert(ly_path, 'pdf')
+  return send_file(path)
