@@ -16,8 +16,8 @@ def getDateTime():
   return jsonify(datetime=now)
 
 def postAudio():
-  if (request.files['file'].content_type[:5] != "audio"):
-    return Response("Unsupported file type", status=400)
+  # if (request.files['file'].content_type[:5] != "audio"):
+  #   return Response("Unsupported file type", status=400)
   file_path = os.path.join(DIR_PATH, request.files['file'].filename)
   request.files['file'].save(file_path)
   file_type = request.form['type']
