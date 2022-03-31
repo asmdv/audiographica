@@ -78,7 +78,7 @@ export const FileUploader = ({}) => {
 
             {srcImage ? (
                 <div>
-                    <ViewPdf image={srcImage}/>
+                    <ViewPdf image={srcImage} setImage={setSrcImage}/>
                 </div>
             ) : <div></div>
             }
