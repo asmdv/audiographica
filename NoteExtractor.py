@@ -23,7 +23,7 @@ class NoteExtractor :
         onset_times = librosa.samples_to_time(onset_boundaries, sr=self.sample_rate)
         return onset_samples, onset_boundaries, onset_times
 
-    def estimate_note(self, segment: list, fmin: float=260.0, fmax: float=2500.0) -> float:
+    def estimate_note(self, segment: list, fmin: float=260.0, fmax: float=2000.0) -> float:
         '''
         returns 
         f0: note frequency 
