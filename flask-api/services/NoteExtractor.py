@@ -153,3 +153,4 @@ class NoteExtractor :
     def set_onset_times(self, onset_times):
         self.onset_times = onset_times
 
+
