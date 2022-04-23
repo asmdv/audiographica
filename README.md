@@ -2,7 +2,7 @@
 
 Converts audio songs into sheet music notes.
 
-![gif](.\readme_media\demo.gif)
+![gif](./readme_media/demo.gif)
 
 ## Tech stack
 * Back-end : Flask
