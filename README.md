@@ -1,4 +1,4 @@
-# Music to Notes
+# Audiographica
 
 Converts audio songs into sheet music notes.
 
